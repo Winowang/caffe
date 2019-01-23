@@ -69,7 +69,7 @@ ENV PATH=CONDADIR/bin:PATH
 
 RUN mkdir -p $CONDA_DIR && \ 
 # Setup work directory for backward-compatibility
-    mkdir /home/work 
+    mkdir -p /home/work 
 
 # Install conda and check the md5 sum provided on the download site
 ENV MINICONDA_VERSION 4.5.4
@@ -129,8 +129,7 @@ RUN conda install --yes \
 
 RUN conda install --quiet --yes caffe-gpu 
     
-RUN conda remove --quiet --yes --force qt pyqt && \
-    conda clean -tipsy && \
+RUN conda clean -tipsy && \
     npm cache clean --force && \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
     rm -rf /home/.cache/yarn && \
