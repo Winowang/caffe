@@ -98,9 +98,6 @@ RUN conda install --yes \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
     rm -rf /home/.cache/yarn 
 
-#USER root
-#EXPOSE 8888
-
 WORKDIR $HOME/work
 
 # Configure container startup
@@ -110,11 +107,9 @@ ENTRYPOINT ["tini", "-g", "--"]
 RUN apt-get update && \
     apt-get install -y --no-install-recommends ffmpeg && \
     apt-get install -y --no-install-recommends libssl-dev && \
-    #apt-get install -y --no-install-recommends libssl1.0-dev && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-#RUN conda install --quiet --yes \
 RUN conda install --yes \
     'ipywidgets=7.2*' \
     conda clean -tipsy && \
@@ -130,9 +125,20 @@ RUN conda install --yes \
     rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
     rm -rf /home/.cache/yarn && \
     rm -rf /home/.node-gyp 
+   
+
+RUN conda install --quiet --yes caffe-gpu 
+    
+RUN conda remove --quiet --yes --force qt pyqt && \
+    conda clean -tipsy && \
+    npm cache clean --force && \
+    rm -rf $CONDA_DIR/share/jupyter/lab/staging && \
+    rm -rf /home/.cache/yarn && \
+    rm -rf /home/.node-gyp
     
 RUN echo export PATH="/opt/conda/bin:$PATH" >> /root/.bashrc 
 RUN echo PermitRootLogin yes >> /etc/ssh/sshd_config 
 #RUN echo "root:111111" | chpasswd
 
 CMD ["sudo /etc/init.d/ssh start"]
+
