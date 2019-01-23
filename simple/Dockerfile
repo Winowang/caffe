@@ -67,9 +67,9 @@ ENV PATH=CONDADIR/bin:PATH
 
 #USER root
 
-RUN mkdir -p $CONDA_DIR && \ 
+RUN mkdir -p $CONDA_DIR
 # Setup work directory for backward-compatibility
-    mkdir -p /home/work 
+RUN mkdir /home/work 
 
 # Install conda and check the md5 sum provided on the download site
 ENV MINICONDA_VERSION 4.5.4
